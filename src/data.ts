@@ -1,5 +1,6 @@
 import {ChatCompletionRequestMessage, ChatCompletionRequestMessageRoleEnum} from "openai";
 import {User} from "./interface";
+import { config } from "./config.js";
 
 /**
  * 使用内存作为数据库
@@ -29,7 +30,7 @@ class DB {
       chatMessage: [
         {
           role: ChatCompletionRequestMessageRoleEnum.System,
-          content: "You are a helpful assistant."
+          content: config.pre_prompt,
         }
       ],
     };
