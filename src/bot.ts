@@ -230,6 +230,7 @@ export class ChatGPTBot {
     const room = message.room();
     const messageType = message.type();
     const privateChat = !room;
+    let inputText = rawText;
     if (privateChat) {
       console.log(`🤵 Contact: ${talker.name()} 💬 Text: ${rawText}`)
     } else {
@@ -249,7 +250,7 @@ export class ChatGPTBot {
       });
       // Whisper
       whisper("",fileName).then((text) => {
-        message.say(text);
+        inputText = text;
       })
       return;
     }
@@ -279,8 +280,8 @@ export class ChatGPTBot {
       }
       return;
     }
-    if (this.triggerGPTMessage(rawText, privateChat)) {
-      const text = this.cleanMessage(rawText, privateChat);
+    if (this.triggerGPTMessage(inputText, privateChat)) {
+      const text = this.cleanMessage(inputText, privateChat);
       if (privateChat) {
         return await this.onPrivateMessage(talker, text);
       } else{
