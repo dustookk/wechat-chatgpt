@@ -264,7 +264,8 @@ export class ChatGPTBot {
       return;
     }
     // 使用DallE生成图片
-    if (rawText.startsWith("/img")){
+    // if (rawText.startsWith("/img")){ 
+    if (rawText.includes("/img")){
       console.log(`🤖 Image: ${rawText}`)
       const imgContent = rawText.slice(4)
       if (privateChat) {
