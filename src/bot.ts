@@ -32,6 +32,7 @@ interface ICommand{
 }
 export class ChatGPTBot {
   chatPrivateTriggerKeyword = config.chatPrivateTriggerKeyword;
+  chatGroupTriggerKeyword = config.chatGroupTriggerKeyword;
   chatTriggerRule = config.chatTriggerRule? new RegExp(config.chatTriggerRule): undefined;
   disableGroupMessage = config.disableGroupMessage || false;
   botName: string = "";
@@ -42,6 +43,11 @@ export class ChatGPTBot {
   get chatGroupTriggerRegEx(): RegExp {
     return new RegExp(`^@${this.botName}\\s`);
   }
+
+  customGroupTriggerRegEx(): RegExp {
+    return new RegExp(`${this.chatGroupTriggerKeyword}`);
+  }
+
   get chatPrivateTriggerRule(): RegExp | undefined {
     const { chatPrivateTriggerKeyword, chatTriggerRule } = this;
     let regEx = chatTriggerRule
@@ -168,7 +174,7 @@ export class ChatGPTBot {
       const regEx = this.chatPrivateTriggerRule
       triggered = regEx? regEx.test(text): true;
     } else {
-      triggered = this.chatGroupTriggerRegEx.test(text);
+      triggered = this.chatGroupTriggerRegEx.test(text)|| this.customGroupTriggerRegEx().test(text);
       // group message support `chatTriggerRule`
       if (triggered && chatTriggerRule) {
         triggered = chatTriggerRule.test(text.replace(this.chatGroupTriggerRegEx, ""))
@@ -249,11 +255,11 @@ export class ChatGPTBot {
         return;
       });
       // Whisper
-      whisper("",fileName).then((text) => {
+      await whisper("",fileName).then((text) => {
         console.log("Speech to text =>",text);
         inputText = text;
       })
-      return;
+      // return;
     }
     if (rawText.startsWith("/cmd ")){
       console.log(`🤖 Command: ${rawText}`)
