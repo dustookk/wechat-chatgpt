@@ -250,6 +250,7 @@ export class ChatGPTBot {
       });
       // Whisper
       whisper("",fileName).then((text) => {
+        console.log("Speech to text =>",text);
         inputText = text;
       })
       return;
