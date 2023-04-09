@@ -36,9 +36,8 @@ async function chatgpt(username:string,message: string): Promise<string> {
       console.log(`Something went wrong,Code: ${response.status}, ${response.statusText}`)
     }
   }catch (e:any) {
-    if (e.request){
       console.log("请求出错");
-    }
+      assistantMessage = "please try again later -0-";
   }
   return assistantMessage;
 }
