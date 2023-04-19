@@ -20,11 +20,12 @@ class DB {
       console.log(`用户${username}已存在`);
       return existUser;
     }
-    let content = config.pre_prompt;
+    let pre_content = config.pre_prompt;
     // check if username is "辩论群"
     console.log(`名字是${username}`);
     if (username === "辩论群") {
-      content = "从现在开始，咱俩进行辩论, 主题是“每周五天工作制好还是每周四天工作制好”，我的观点是“一周应该工作五天”，你的观点是“一周应该工作四天” 。你的回答都要以 “@jasonguo 我的观点是” 开头，并且内容不要重复。下面我进行我的陈述：";
+      console.log("名字确认");
+      pre_content = "从现在开始，咱俩进行辩论, 主题是“每周五天工作制好还是每周四天工作制好”，我的观点是“一周应该工作五天”，你的观点是“一周应该工作四天” 。你的回答都要以 “@jasonguo 我的观点是” 开头，并且内容不要重复。下面我进行我的陈述：";
     }
     
     const newUser: User = {
@@ -32,7 +33,7 @@ class DB {
       chatMessage: [
         {
           role: ChatCompletionRequestMessageRoleEnum.System,
-          content: config.pre_prompt,
+          content: pre_content,
         }
       ],
     };
